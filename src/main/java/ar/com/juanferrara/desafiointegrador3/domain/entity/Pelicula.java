@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Pelicula {
@@ -29,7 +28,7 @@ public class Pelicula {
             joinColumns = @JoinColumn(name = "pelicula_id"),
             inverseJoinColumns = @JoinColumn(name = "genero_id")
     )
-    private List<Genero> generos;
+    private List<Genero> generosList;
 
     @Column(name = "url_sitio_web", nullable = false, length = 100)
     private String urlSitioWeb;
