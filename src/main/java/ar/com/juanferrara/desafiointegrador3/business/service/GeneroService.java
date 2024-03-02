@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface GeneroService {
 
-    GeneroDTO crearGenero(GeneroDTO genero);
-    GeneroDTO modificarGenero(Long id, GeneroDTO genero);
+    GeneroDTO crearGenero(GeneroDTO generoDTO);
+    GeneroDTO modificarGenero(Long id, GeneroDTO generoDTO);
     GeneroDTO eliminarGenero(Long id);
     GeneroDTO getGeneroPorId(Long id);
     List<GeneroDTO> listarTodosLosGeneros();
