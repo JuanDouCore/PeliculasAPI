@@ -21,6 +21,7 @@ public class ImagenPelicula {
     @Column(name = "nombre_archivo", nullable = false, length = 50)
     private String nombreArchivo;
 
+    @Lob
     @Column(name = "contenido", nullable = false)
     private byte[] contenido;
 
