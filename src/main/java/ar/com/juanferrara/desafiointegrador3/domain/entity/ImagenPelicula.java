@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class ImagenPelicula {
@@ -21,7 +22,7 @@ public class ImagenPelicula {
     private String nombreArchivo;
 
     @Lob
-    @Column(name = "contenido", nullable = false)
+    @Column(name = "contenido", nullable = false, columnDefinition = "LONGBLOB")
     private byte[] contenido;
 
 }

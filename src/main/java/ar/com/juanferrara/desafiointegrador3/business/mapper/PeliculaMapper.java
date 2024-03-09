@@ -12,5 +12,7 @@ import java.util.List;
 @Component
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface PeliculaMapper extends IGenericMapper<Pelicula, PeliculaDTO>{
-
+    @Override
+    @Mapping(target = "nombreArchivoImagen", source = "pelicula.imagen.nombreArchivo")
+    PeliculaDTO toDto(Pelicula pelicula);
 }
