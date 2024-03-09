@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -19,4 +20,6 @@ public class ImageServiceImpl implements ImageService {
             throw new GenericException("Error al convertir la imagen a bytes", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }
