@@ -2,6 +2,8 @@ package ar.com.juanferrara.desafiointegrador3.presentation.controller;
 
 import ar.com.juanferrara.desafiointegrador3.business.dto.PeliculaDTO;
 import ar.com.juanferrara.desafiointegrador3.business.service.PeliculaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,6 +21,7 @@ public class PeliculaController {
     @Autowired
     private PeliculaService peliculaService;
 
+    @Operation(security = @SecurityRequirement(name = "Bearer Authentication"))
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,  MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<PeliculaDTO> crearPelicula(@RequestPart("pelicula") String peliculaStringToParse, @RequestPart("imagen") MultipartFile peliculaImage) {

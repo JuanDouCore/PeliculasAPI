@@ -3,6 +3,8 @@ package ar.com.juanferrara.desafiointegrador3.presentation.controller;
 import ar.com.juanferrara.desafiointegrador3.business.dto.CrearGeneroDTO;
 import ar.com.juanferrara.desafiointegrador3.business.dto.GeneroDTO;
 import ar.com.juanferrara.desafiointegrador3.business.service.GeneroService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,7 @@ public class GeneroController {
         return ResponseEntity.ok(generoService.listarTodosLosGeneros());
     }
 
+    @Operation(security = @SecurityRequirement(name = "Bearer Authentication"))
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<GeneroDTO> crearGenero(@RequestBody @Valid CrearGeneroDTO generoDTO) {
@@ -37,6 +40,7 @@ public class GeneroController {
                 .body(genero);
     }
 
+    @Operation(security = @SecurityRequirement(name = "Bearer Authentication"))
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{id}")
     public ResponseEntity<GeneroDTO> eliminarGenero(@PathVariable Long id) {
@@ -44,6 +48,7 @@ public class GeneroController {
         return ResponseEntity.ok(generoDTO);
     }
 
+    @Operation(security = @SecurityRequirement(name = "Bearer Authentication"))
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{id}")
     public ResponseEntity<GeneroDTO> actualizarGenero(@PathVariable Long id, @RequestBody @Valid CrearGeneroDTO generoDTO) {
