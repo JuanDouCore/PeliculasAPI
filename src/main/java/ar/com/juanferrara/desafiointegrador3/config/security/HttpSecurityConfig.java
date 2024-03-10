@@ -2,6 +2,7 @@ package ar.com.juanferrara.desafiointegrador3.config.security;
 
 import ar.com.juanferrara.desafiointegrador3.config.security.exceptions.CustomAccessDeniedHandler;
 import ar.com.juanferrara.desafiointegrador3.config.security.exceptions.CustomAuthenticationEntryPoint;
+import ar.com.juanferrara.desafiointegrador3.config.security.filters.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,9 @@ public class HttpSecurityConfig {
     private AuthenticationProvider authenticationProvider;
 
     @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Autowired
     private CustomAccessDeniedHandler customAccessDeniedHandler;
@@ -33,7 +37,7 @@ public class HttpSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagementConfig -> sessionManagementConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                //.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandlingConfig ->
                         exceptionHandlingConfig.authenticationEntryPoint(customAuthenticationEntryPoint)
                                 .accessDeniedHandler(customAccessDeniedHandler));
