@@ -5,12 +5,14 @@ import ar.com.juanferrara.desafiointegrador3.business.dto.AuthenticationRequestD
 import ar.com.juanferrara.desafiointegrador3.business.service.AuthService;
 import ar.com.juanferrara.desafiointegrador3.business.service.JwtService;
 import ar.com.juanferrara.desafiointegrador3.domain.entity.Usuario;
+import ar.com.juanferrara.desafiointegrador3.domain.enums.Rol;
 import ar.com.juanferrara.desafiointegrador3.domain.exceptions.GenericException;
 import ar.com.juanferrara.desafiointegrador3.persistence.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,22 +25,26 @@ public class AuthServiceImpl implements AuthService {
     private AuthenticationProvider authenticationProvider;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private JwtService jwtService;
 
     @Override
     public AuthResponseDTO register(AuthenticationRequestDTO registerRequestDTO) {
-        if(usuarioRepository.existsByCorreo(registerRequestDTO.getEmail()))
+        if(usuarioRepository.existsByCorreo(registerRequestDTO.getCorreo()))
             throw new GenericException("El correo ya se encuentra registrado", HttpStatus.BAD_REQUEST);
 
         Usuario usuarioForRegister = Usuario.builder()
-                .correo(registerRequestDTO.getEmail())
-                .contraseña(registerRequestDTO.getPassword())
+                .correo(registerRequestDTO.getCorreo())
+                .contraseña(passwordEncoder.encode(registerRequestDTO.getContraseña()))
+                .role(Rol.USER)
                 .build();
 
         String token = jwtService.generarToken(usuarioRepository.save(usuarioForRegister));
 
         return AuthResponseDTO.builder()
-                .email(registerRequestDTO.getEmail())
+                .email(registerRequestDTO.getCorreo())
                 .tokenType("Bearer")
                 .token(token)
                 .build();
@@ -46,20 +52,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDTO login(AuthenticationRequestDTO authenticationRequestDTO) {
-        if(!usuarioRepository.existsByCorreo(authenticationRequestDTO.getEmail()))
+        if(!usuarioRepository.existsByCorreo(authenticationRequestDTO.getCorreo()))
             throw new GenericException("Bad credentials", HttpStatus.FORBIDDEN);
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getEmail(),
-                        authenticationRequestDTO.getPassword());
+                new UsernamePasswordAuthenticationToken(authenticationRequestDTO.getCorreo(),
+                        authenticationRequestDTO.getContraseña());
 
         authenticationProvider.authenticate(usernamePasswordAuthenticationToken);
 
-        Usuario usuario = usuarioRepository.findByCorreo(authenticationRequestDTO.getEmail()).get();
+        Usuario usuario = usuarioRepository.findByCorreo(authenticationRequestDTO.getCorreo()).get();
         String token = jwtService.generarToken(usuario);
 
         return AuthResponseDTO.builder()
-                .email(authenticationRequestDTO.getEmail())
+                .email(authenticationRequestDTO.getCorreo())
                 .tokenType("Bearer")
                 .token(token)
                 .build();

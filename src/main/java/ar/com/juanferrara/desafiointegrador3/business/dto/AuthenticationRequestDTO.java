@@ -16,10 +16,10 @@ public class AuthenticationRequestDTO {
 
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "El correo debe ser válido")
-    private String email;
+    private String correo;
 
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
-    private String password;
+    private String contraseña;
 
 }
