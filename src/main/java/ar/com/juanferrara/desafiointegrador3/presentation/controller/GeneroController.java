@@ -6,6 +6,7 @@ import ar.com.juanferrara.desafiointegrador3.business.service.GeneroService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -28,6 +29,7 @@ public class GeneroController {
         return ResponseEntity.ok(generoService.listarTodosLosGeneros());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<GeneroDTO> crearGenero(@RequestBody @Valid CrearGeneroDTO generoDTO) {
         GeneroDTO genero = generoService.crearGenero(generoDTO);
@@ -35,12 +37,14 @@ public class GeneroController {
                 .body(genero);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{id}")
     public ResponseEntity<GeneroDTO> eliminarGenero(@PathVariable Long id) {
         GeneroDTO generoDTO = generoService.eliminarGenero(id);
         return ResponseEntity.ok(generoDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{id}")
     public ResponseEntity<GeneroDTO> actualizarGenero(@PathVariable Long id, @RequestBody @Valid CrearGeneroDTO generoDTO) {
         return ResponseEntity.ok(generoService.modificarGenero(id, generoDTO));

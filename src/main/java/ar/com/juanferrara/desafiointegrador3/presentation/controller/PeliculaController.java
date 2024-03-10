@@ -6,6 +6,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ public class PeliculaController {
     @Autowired
     private PeliculaService peliculaService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE,  MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<PeliculaDTO> crearPelicula(@RequestPart("pelicula") String peliculaStringToParse, @RequestPart("imagen") MultipartFile peliculaImage) {
         return ResponseEntity.ok(peliculaService.crearPelicula(peliculaStringToParse, peliculaImage));
