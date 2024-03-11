@@ -42,7 +42,12 @@ La API cuenta con los siguientes endpoints:
 La documentacion de la API se encuentra en la siguiente URL:
 - http://localhost:8080/docs
 
+## Video demostrativo
+https://youtu.be/Lwlu-SDo_L4
+(se subió a youtube dado que github no deja subir archivos de +100mb)
+
 ## DER Base de Datos
+![EDUIT-DER-PELICULAS](https://github.com/JuanDouCore/PeliculasAPI/assets/22947314/89a6ba44-befd-4c08-ba90-edb02b25b9d0)
 
 
 ## Autor
